@@ -25,13 +25,13 @@ az deployment group create --resource-group $RESOURCE_GROUP --template-file azur
 
 ## portal 
 
-[Deploy to Azure](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fasw101%2Fazure-linux%2Fdev-cloud-snips%2F00-vmss%2Fazuredeploy.json%0A)
+[Deploy to Azure](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fasw101%2Fazure-linux%2Fdev-cloud-snips%2F00-vmss%2Fazuredeploy.json)
 
 ```bash
 TEMPLATE_URL='https://raw.githubusercontent.com/asw101/azure-linux/dev-cloud-snips/00-vmss/azuredeploy.json'
-OUTPUT_URL='https://portal.azure.com/#create/Microsoft.Template/uri/'$(echo $TEMPLATE_URL | jq -s -R -r @uri )
+OUTPUT_URL='https://portal.azure.com/#create/Microsoft.Template/uri/'$(printf "$TEMPLATE_URL" | jq -s -R -r @uri )
 echo $OUTPUT_URL
 
-# https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fasw101%2Fazure-linux%2Fdev-cloud-snips%2F00-vmss%2Fazuredeploy.json%0A
+# https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fasw101%2Fazure-linux%2Fdev-cloud-snips%2F00-vmss%2Fazuredeploy.json
 ```
 
