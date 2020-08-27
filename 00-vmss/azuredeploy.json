@@ -174,7 +174,7 @@
         "nicName": "[concat(parameters('vmssName'), '-nic')]",
         "publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]",
         "publicIPAddressName": "[concat(parameters('vmssName'), '-ip')]",
-        "publicIPAddressType": "Dynamic",
+        "publicIPAddressType": "Static",
         "subnetName": "default",
         "subnetPrefix": "10.0.0.0/24",
         "virtualNetworkName": "[concat(resourceGroup().name, '-vnet')]",
@@ -304,7 +304,7 @@
             "type": "Microsoft.Compute/virtualMachineScaleSets",
             "name": "[variables('vmssName')]",
             "location": "[parameters('location')]",
-            "apiVersion": "2018-06-01",
+            "apiVersion": "2019-12-01",
             "identity": {
                 "type": "UserAssigned",
                 "userAssignedIdentities": {
