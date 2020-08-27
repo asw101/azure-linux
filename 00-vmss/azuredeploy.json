@@ -377,10 +377,6 @@
         }
     ],
     "outputs": {
-        "ipAddress": {
-            "type": "string",
-            "value": "[reference(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))).ipAddress]"
-        },
         "fqdn": {
             "type": "string",
             "value": "[reference(concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))).dnsSettings.fqdn]"
