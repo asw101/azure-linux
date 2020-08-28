@@ -113,13 +113,20 @@
                 "description": "URL to cloud-init script"
             }
         },
+        "env": {
+            "type": "object",
+            "defaultValue": {},
+            "metadata": {
+                "description": "Environment variables as JSON object"
+            }
+        },
         "instanceCount": {
             "type": "int",
             "defaultValue": 1,
             "metadata": {
-                "description": "Number of VM instances (100 or less)."
+                "description": "Number of VM instances (1000 or less)."
             },
-            "maxValue": 100
+            "maxValue": 1000
         },
         "vmssTier": {
             "type": "string",
@@ -156,9 +163,13 @@
         }
     },
     "variables": {
+        "env": "[parameters('env')]",
+        "quote": "'",
+        "customDataUrl": "[parameters('customDataUrl')]",
+        "customDataAdvanced": "[base64(concat('#cloud-config\n# vim: syntax=yaml\n\npackages:\n- docker.io\n- jq\n\n# create the docker group\ngroups:\n  - docker\n\n# Add default auto created user to docker group\nsystem_info:\n  default_user:\n    groups: [docker]\n\nwrite_files:\n\n- encoding: b64\n  content: ',base64(string(variables('env'))),'\n  path: /home/azureuser/env.json\n\nruncmd:\n- cd /home/azureuser/\n- $( cat env.json | jq -r ',variables('quote'),'keys[] as $k | \"export \\($k)=\\(.[$k])\"',variables('quote'),' )\n- curl -L -o cloud-init.sh ',variables('quote'),variables('customDataUrl'),variables('quote'),'\n- bash cloud-init.sh 2>&1 | tee cloud-init.log\n'))]",
+        "customData": "[base64(concat('#include\n', parameters('customDataUrl')))]",
         "addressPrefix": "10.0.0.0/16",
         "bePoolName": "[concat(parameters('vmssName'), '-bepool')]",
-        "customData": "[base64(concat('#include\n', parameters('customDataUrl')))]",
         "dnsPrefix": "[if(equals(parameters('dnsPrefix'), ''), concat(parameters('vmssName'), '-', uniqueString(resourceGroup().id)), parameters('dnsPrefix'))]",
         "frontEndIPConfigID": "[concat(variables('lbID'),'/frontendIPConfigurations/loadBalancerFrontEnd')]",
         "identityName": "[concat(resourceGroup().name, '-identity')]",
@@ -442,7 +453,7 @@
                     },
                     "osProfile": {
                         "computerNamePrefix": "[variables('vmssName')]",
-                        "customData": "[if(equals(parameters('customDataUrl'), ''), json('null'), variables('customData'))]",
+                        "customData": "[if(equals(parameters('customDataUrl'), ''), json('null'), variables('customDataAdvanced'))]",
                         "adminUsername": "azureuser",
                         "linuxConfiguration": {
                             "disablePasswordAuthentication": true,
