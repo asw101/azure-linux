@@ -32,3 +32,13 @@ function a-ssh {
 	    -o StrictHostKeyChecking=no
 }
 
+function a-ssh-port {
+	[[ -z "${ID_RSA:-}" ]] && local ID_RSA="~/.ssh/id_rsa.pub"
+	
+	ssh $1 \
+	    -i $ID_RSA \
+	    -o UserKnownHostsFile=/dev/null \
+	    -o StrictHostKeyChecking=no \
+	    -p $2
+}
+
