@@ -65,6 +65,44 @@
                 "description": "The Virtual Machine size."
             }
         },
+        "osDiskSize": {
+            "type": "int",
+            "defaultValue": 1024,
+            "allowedValues": [
+                1024,
+                512,
+                256,
+                128
+            ],
+            "metadata": {
+                "description": "The OS Disk size."
+            }
+        },
+        "dataDiskSize": {
+            "type": "int",
+            "defaultValue": 0,
+            "allowedValues": [
+                1024,
+                512,
+                256,
+                128,
+                0
+            ],
+            "metadata": {
+                "description": "The Data Disk size."
+            }
+        },
+        "diskAccountType": {
+            "type": "string",
+            "defaultValue": "Premium_LRS",
+            "allowedValues": [
+                "Premium_LRS",
+                "UltraSSD_LRS"
+            ],
+            "metadata": {
+                "description": "The Storage Account Type for OS and Data disks."
+            }
+        },
         "osPublisher": {
             "type": "string",
             "defaultValue": "Canonical",
@@ -441,6 +479,10 @@
                     "evictionPolicy": "[if(equals(parameters('vmssPriority'), 'Regular'), json('null'), parameters('vmssEvictionPolicy'))]",
                     "storageProfile": {
                         "osDisk": {
+                            "managedDisk": {
+                                "storageAccountType": "[parameters('diskAccountType')]"
+                            },
+                            "diskSizeGB": "[parameters('osDiskSize')]",
                             "createOption": "FromImage",
                             "caching": "ReadWrite"
                         },
