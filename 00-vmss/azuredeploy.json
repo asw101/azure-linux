@@ -159,7 +159,6 @@
         "customData": "[base64(concat('#include\n', parameters('customDataUrl')))]",
         "dnsPrefix": "[if(equals(parameters('dnsPrefix'), ''), concat(parameters('vmssName'), '-', uniqueString(resourceGroup().id)), parameters('dnsPrefix'))]",
         "frontEndIPConfigID": "[concat(variables('lbID'),'/frontendIPConfigurations/loadBalancerFrontEnd')]",
-        "httpProbeName": "httpProbe",
         "identityName": "[concat(resourceGroup().name, '-identity')]",
         "imageOffer": "[parameters('osOffer')]",
         "imagePublisher": "[parameters('osPublisher')]",
@@ -336,7 +335,7 @@
                 ],
                 "loadBalancingRules": [
                     {
-                        "name": "HTTPRule",
+                        "name": "Rule_80",
                         "properties": {
                             "loadDistribution": "Default",
                             "frontendIPConfiguration": {
@@ -351,17 +350,46 @@
                             "enableFloatingIP": false,
                             "idleTimeoutInMinutes": 5,
                             "probe": {
-                                "id": "[concat(variables('lbId'), '/probes/', variables('httpProbeName'))]"
+                                "id": "[concat(variables('lbId'), '/probes/', 'Probe_80')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Rule_443",
+                        "properties": {
+                            "loadDistribution": "Default",
+                            "frontendIPConfiguration": {
+                                "id": "[variables('frontEndIPConfigID')]"
+                            },
+                            "backendAddressPool": {
+                                "id": "[concat('/subscriptions/', subscription().subscriptionId,'/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/loadBalancers/', variables('loadBalancerName'), '/backendAddressPools/', variables('bePoolName'))]"
+                            },
+                            "protocol": "Tcp",
+                            "frontendPort": 443,
+                            "backendPort": 443,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 5,
+                            "probe": {
+                                "id": "[concat(variables('lbId'), '/probes/', 'Probe_443')]"
                             }
                         }
                     }
                 ],
                 "probes": [
                     {
-                        "name": "[variables('httpProbeName')]",
+                        "name": "Probe_80",
                         "properties": {
                             "protocol": "Tcp",
                             "port": 80,
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        }
+                    },
+                    {
+                        "name": "Probe_443",
+                        "properties": {
+                            "protocol": "Tcp",
+                            "port": 443,
                             "intervalInSeconds": 5,
                             "numberOfProbes": 2
                         }
