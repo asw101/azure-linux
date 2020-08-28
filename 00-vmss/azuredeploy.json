@@ -34,6 +34,13 @@
                 "description": "SSH Key or password for the Virtual Machine. SSH key is recommended."
             }
         },
+	"allowIpPort22": {
+		"type":"string",
+		"defaultValue":"127.0.0.1",
+		"metadata": {
+			"description": "Default IP to allow Port 22 (SSH). Set to your own IP Address"
+		}
+	},
         "dnsPrefix": {
             "type": "string",
             "defaultValue": "",
@@ -294,9 +301,9 @@
                             "protocol": "*",
                             "sourcePortRange": "*",
                             "destinationPortRange": "22",
-                            "sourceAddressPrefix": "Internet",
+                            "sourceAddressPrefix": "[parameters('allowIpPort22')]",
                             "destinationAddressPrefix": "*",
-                            "access": "Deny",
+                            "access": "Allow",
                             "priority": 100,
                             "direction": "Inbound"
                         }
