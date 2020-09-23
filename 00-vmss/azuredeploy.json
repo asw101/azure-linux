@@ -34,13 +34,13 @@
                 "description": "SSH Key or password for the Virtual Machine. SSH key is recommended."
             }
         },
-	"allowIpPort22": {
-		"type":"string",
-		"defaultValue":"127.0.0.1",
-		"metadata": {
-			"description": "Default IP to allow Port 22 (SSH). Set to your own IP Address"
-		}
-	},
+        "allowIpPort22": {
+            "type": "string",
+            "defaultValue": "127.0.0.1",
+            "metadata": {
+                "description": "Default IP to allow Port 22 (SSH). Set to your own IP Address"
+            }
+        },
         "dnsPrefix": {
             "type": "string",
             "defaultValue": "",
@@ -79,7 +79,9 @@
                 1024,
                 512,
                 256,
-                128
+                128,
+                64,
+                32
             ],
             "metadata": {
                 "description": "The OS Disk size."
