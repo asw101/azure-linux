@@ -20,18 +20,18 @@ az deployment group create --resource-group $RESOURCE_GROUP --template-file azur
 az deployment group create --resource-group $RESOURCE_GROUP --template-file azuredeploy.json \
     --parameters adminPasswordOrKey="$PASSWORD_OR_KEY" \
         vmName=vm2 \
-        customDataUrl='https://raw.githubusercontent.com/asw101/azure-linux/dev-cloud-snips/00-vmss/cloud-init/cloud-init.sh'
+        customDataUrl='https://raw.githubusercontent.com/asw101/azure-linux/dev/00-vmss/cloud-init/cloud-init.sh'
 ```
 
 ## portal 
 
-[Deploy to Azure](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fasw101%2Fazure-linux%2Fdev-cloud-snips%2F00-vmss%2Fazuredeploy.json)
+[Deploy to Azure](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fasw101%2Fazure-linux%2Fdev%2F00-vmss%2Fazuredeploy.json)
 
 ```bash
-TEMPLATE_URL='https://raw.githubusercontent.com/asw101/azure-linux/dev-cloud-snips/00-vmss/azuredeploy.json'
+TEMPLATE_URL='https://raw.githubusercontent.com/asw101/azure-linux/dev/00-vmss/azuredeploy.json'
 OUTPUT_URL='https://portal.azure.com/#create/Microsoft.Template/uri/'$(printf "$TEMPLATE_URL" | jq -s -R -r @uri )
 echo $OUTPUT_URL
 
-# https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fasw101%2Fazure-linux%2Fdev-cloud-snips%2F00-vmss%2Fazuredeploy.json
+# https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fasw101%2Fazure-linux%2Fdev%2F00-vmss%2Fazuredeploy.json
 ```
 
